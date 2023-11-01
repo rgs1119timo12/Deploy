@@ -25,7 +25,9 @@ jobs:
       # 작업에서 액세스할 수 있도록 $GITHUB_WORKSPACE에서 저장소를 체크아웃합니다.
       - name: Checkout
         uses: actions/checkout@v3
-
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+        shell: bash
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
