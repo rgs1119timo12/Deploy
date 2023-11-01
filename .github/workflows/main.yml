@@ -36,4 +36,4 @@ jobs:
         run: aws s3 cp --region ${{ env.AWS_REGION }} ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name $CODEDEPLOY_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODEDEPLOY_GROUP --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip  --deployment-config-name CodeDeployDefault.OneAtATime --file-exists-behavior OVERWRITE --auto-rollback-configuration enabled=boolean,events=DEPLOYMENT_FAILURE
+        run: aws deploy create-deployment --application-name $CODEDEPLOY_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODEDEPLOY_GROUP --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$GITHUB_SHA.zip  --deployment-config-name CodeDeployDefault.OneAtATime --file-exists-behavior OVERWRITE --auto-rollback-configuration enabled=true,events=DEPLOYMENT_FAILURE
