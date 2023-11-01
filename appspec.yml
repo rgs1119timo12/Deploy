@@ -1,0 +1,13 @@
+version: 0.0
+os: linux
+files:
+  - source: web/
+    destination: /var/www/html
+    runas: ubuntu
+hooks:
+  BeforeInstall:
+    - location: scripts/before-deploy.sh
+      runas: ubuntu
+  AfterInstall:
+    - location: scripts/after-deploy.sh
+      runas: ubuntu
