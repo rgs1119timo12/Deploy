@@ -1,6 +1,8 @@
 # workflow의 이름
 name: github-action-test
-
+env:
+  S3_BUCKET_NAME: inhakcodedeploy
+  AWS_REGION: ap-northeast-2
 # 해당 workflow가 언제 실행될 것인지에 대한 트리거를 지정
 on:
   # main branch에 대한 push 나 pull request 이벤트를 트리거로 지정
@@ -24,10 +26,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
-        shell: bash
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
       
-      - name: Build with Gradle
-        run: ./gradlew build
-        shell: bash
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip
